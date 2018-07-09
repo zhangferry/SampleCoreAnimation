@@ -46,7 +46,9 @@ class MainTableViewController: UITableViewController {
             let vc = BreathingViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         case 2:
-            let vc = ViewController()
+            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "playControl")
+            //let vc = PlayingControlViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         default:
             print("nothing")
