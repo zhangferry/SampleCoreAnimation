@@ -46,7 +46,7 @@ class MainTableViewController: UITableViewController {
             let vc = BreathingViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         case 2:
-            let vc = WaterWaveViewController()
+            let vc = ViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         default:
             print("nothing")

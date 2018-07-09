@@ -13,8 +13,6 @@ class BreathingViewController: UIViewController {
     var contentView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         view.backgroundColor = UIColor.white
         
         contentView = UIView()
@@ -32,23 +30,15 @@ class BreathingViewController: UIViewController {
         for index in 0..<6 {
             
             let center = CGPoint(x: contentView.bounds.width/2, y: contentView.bounds.height/2)
-            let layer = CALayer()
-            layer.frame = CGRect.init(x: 0, y: 0, width: radius * 2, height: radius * 2)
-            layer.cornerRadius = radius
+            //使用贝塞尔曲线画圆，设置layer的frame和position
+            let path = UIBezierPath.init(ovalIn: CGRect.init(x: 0, y: 0, width: radius * 2, height: radius * 2))
+
+            let layer = CAShapeLayer()
+            layer.frame = CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
             layer.position = center
-            layer.backgroundColor = UIColor(red: 1, green: 0, blue: 1, alpha: 0.4).cgColor
-            
-            //使用贝塞尔曲线画圆，中心不好确定
-            //            let path = UIBezierPath.init(ovalIn: CGRect.init(x: 0, y: 0, width: radius * 2, height: radius * 2))
-            //
-            //            let layer = CAShapeLayer()
-            //            layer.path = path.cgPath
-            //            layer.fillColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor
-            //            layer.frame = CGRect.init(x: 0, y: 0, width: radius, height: radius)
-            
+            layer.path = path.cgPath
+            layer.fillColor = UIColor.init(red: 1, green: 0, blue: 1, alpha: 0.5).cgColor
             contentView.layer.addSublayer(layer)
-            
-            layer.position = center
             
             let animation1 = CABasicAnimation()
             animation1.keyPath = "position"
@@ -62,16 +52,12 @@ class BreathingViewController: UIViewController {
                 endPoint = CGPoint(x:center.x + radius * scale * 0.5,y:center.y - radius * scale * 0.5 * sqrt(3))
             case 2:
                 endPoint = CGPoint(x:center.x - radius * scale * 0.5,y:center.y - radius * scale * 0.5 * sqrt(3))
-                
             case 3:
                 endPoint = CGPoint(x:center.x - radius * scale,y:center.y)
-                
             case 4:
                 endPoint = CGPoint(x:center.x - radius * scale * 0.5,y:center.y + radius * scale * 0.5 * sqrt(3))
-                
             case 5:
                 endPoint = CGPoint(x:center.x + radius * scale * 0.5,y:center.y + radius * scale * 0.5 * sqrt(3))
-                
             default:
                 layer.removeFromSuperlayer()
                 continue
@@ -81,8 +67,7 @@ class BreathingViewController: UIViewController {
             let animation2 = CABasicAnimation()
             animation2.keyPath = "transform.scale"
             animation2.toValue = scale
-            
-            
+            //add group animation
             let animationGroup = CAAnimationGroup()
             animationGroup.animations = [animation1, animation2]
             animationGroup.duration = duration
@@ -91,7 +76,6 @@ class BreathingViewController: UIViewController {
             animationGroup.autoreverses = true
             layer.add(animationGroup, forKey: nil)
         }
-        
         //整体旋转
         let animation = CABasicAnimation()
         animation.keyPath = "transform.rotation.z"
